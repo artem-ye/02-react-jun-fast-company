@@ -8,8 +8,21 @@ const Users = () => {
     const renderCaption = () => {        
         const usersQty = users.length;        
 
-        let spellCount = 5;
+        let spellCount = 5;        
 
+        if (usersQty >= 5 && usersQty <= 14) {
+            spellCount = 5;
+        } else {
+            const lastOneChar = Number(usersQty.toString().slice(-1));
+
+            if (lastOneChar === 1) {
+                spellCount = 1;
+            } else if (lastOneChar >= 2 && lastOneChar <= 4) {
+                spellCount = 2;
+            }
+        }
+
+        /*
         if (usersQty <= 1) {
             spellCount = 1;            
         } else if (usersQty >= 2 && usersQty <= 4) {
@@ -25,6 +38,7 @@ const Users = () => {
                 spellCount = 2;
             }
         }                
+        */
 
         const [text, color] = usersQty === 0 ? 
             ['Никто не потусит с тобой сегодня', 'danger'] : 
