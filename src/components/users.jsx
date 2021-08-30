@@ -20,25 +20,7 @@ const Users = () => {
             } else if (lastOneChar >= 2 && lastOneChar <= 4) {
                 spellCount = 2;
             }
-        }
-
-        /*
-        if (usersQty <= 1) {
-            spellCount = 1;            
-        } else if (usersQty >= 2 && usersQty <= 4) {
-            spellCount = 2;
-        } else if (usersQty > 20) {
-            if ( (usersQty-1) % 10 === 0 ) {
-                spellCount = 1;
-            } else if (
-                ((usersQty-2) % 10 === 0) ||
-                ((usersQty-3) % 10 === 0) ||
-                ((usersQty-4) % 10 === 0) 
-            ) {
-                spellCount = 2;
-            }
-        }                
-        */
+        }       
 
         const [text, color] = usersQty === 0 ? 
             ['Никто не потусит с тобой сегодня', 'danger'] : 
