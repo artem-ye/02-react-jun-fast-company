@@ -10,25 +10,25 @@ const App = () => {
 
     const deleteUserHandler = (userId) => {
         setUsers(users.filter(usr => usr._id !== userId));
-    }
+    };
 
     const handlerUserBookmarkToggle = (userId) => {
         const newUsersState = [...users];
         const el = newUsersState.find(el => el._id === userId);
         el.isFavorite = !el.isFavorite;
         setUsers(newUsersState);
-    }
+    };
 
-    return ( 
+    return (
         <>
-            <SearchStatus usersQty={users.length}/> 
-            <UsersTable 
-                users={users} 
+            <SearchStatus usersQty={users.length}/>
+            <UsersTable
+                users={users}
                 onUserDelete={deleteUserHandler}
                 onUserBookmarkClick={handlerUserBookmarkToggle}
             />
         </>
     );
-}
- 
+};
+
 export default App;

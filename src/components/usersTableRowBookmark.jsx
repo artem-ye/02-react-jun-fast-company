@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
 const UsersTableRowBookmark = ({isFavorite, onUserBookmarkClick}) => {
-    return ( 
-        <i 
-            className={"bi bi-bookmark" + (isFavorite ? '-heart-fill' : '')}
+    return (
+        <i
+            className={'bi bi-bookmark' + (isFavorite ? '-heart-fill' : '')}
             onClick={onUserBookmarkClick}
-        ></i> 
+        ></i>
     );
-}
- 
+};
+
 export default UsersTableRowBookmark;
