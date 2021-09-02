@@ -4,16 +4,17 @@ import Pagination from './pagination';
 import UsersTableRows from './usersTableRows';
 
 const UsersTable = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
-    const USERS_COUNT = allUsers.length;
-    const PAGE_SIZE = 5;
-
+    // Pagination
     const [currentPageNum, setCurrentPageNum] = useState(1);
 
     const handlePageChange = (pageNum) => {
         setCurrentPageNum(pageNum);
     };
 
-    const users = paginate(allUsers, currentPageNum, PAGE_SIZE);
+    const PAGE_SIZE = 5;
+    const PAGES_COUNT = Math.ceil(allUsers.length / PAGE_SIZE);
+    const CURRENT_PAGE_NUM = currentPageNum > PAGES_COUNT ? PAGES_COUNT : currentPageNum;
+    const users = paginate(allUsers, CURRENT_PAGE_NUM, PAGE_SIZE);
 
     return (
         <>
@@ -38,9 +39,8 @@ const UsersTable = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
                 </tbody>
             </table>
             <Pagination
-                itemsCount={USERS_COUNT}
-                pageSize={PAGE_SIZE}
-                currentPageNum={currentPageNum}
+                pagesCount={PAGES_COUNT}
+                currentPageNum={CURRENT_PAGE_NUM}
                 onPageChange={handlePageChange}
             />
         </>
