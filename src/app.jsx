@@ -1,34 +1,34 @@
-import React, {useState} from 'react';
-// import Users from './components/users';
+import React, {useState, useEffect} from 'react';
 import api from './API/index';
-import SearchStatus from './components/searchStatus';
 import UsersTable from './components/usersTable';
 
 const App = () => {
-    const usersInitialState = api.users.fetchAll();
-    const [users, setUsers] = useState(usersInitialState);
+    const [users, setUsers] = useState([]);
 
     const deleteUserHandler = (userId) => {
         setUsers(users.filter(usr => usr._id !== userId));
-    }
+    };
+
+    useEffect(() => {
+        api.users.fetchAll().then(setUsers);
+    }, []);
 
     const handlerUserBookmarkToggle = (userId) => {
         const newUsersState = [...users];
         const el = newUsersState.find(el => el._id === userId);
         el.isFavorite = !el.isFavorite;
         setUsers(newUsersState);
-    }
+    };
 
-    return ( 
+    return (
         <>
-            <SearchStatus usersQty={users.length}/> 
-            <UsersTable 
-                users={users} 
+            <UsersTable
+                users={users}
                 onUserDelete={deleteUserHandler}
                 onUserBookmarkClick={handlerUserBookmarkToggle}
             />
         </>
     );
-}
- 
+};
+
 export default App;

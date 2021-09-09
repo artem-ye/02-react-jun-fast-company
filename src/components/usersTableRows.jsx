@@ -3,7 +3,7 @@ import UsersTableRowBookmark from './usersTableRowBookmark';
 import UsersTableRowQualities from './usersTableRowQualities';
 
 const UsersTableRows = ({users, onUserDelete, onUserBookmarkClick}) => {
-    const renderRow = (user) => {        
+    const renderRow = (user) => {
         return (
             <tr key={user._id}>
                 <td>{user.name}</td>
@@ -14,15 +14,15 @@ const UsersTableRows = ({users, onUserDelete, onUserBookmarkClick}) => {
                 <td>{user.completedMeetings}</td>
                 <td>{user.rate}</td>
                 <td>
-                    <UsersTableRowBookmark 
+                    <UsersTableRowBookmark
                         isFavorite={user.isFavorite}
                         onUserBookmarkClick={() => onUserBookmarkClick(user._id)}
-                    />                    
+                    />
                 </td>
                 <td>
-                    <button 
-                        className="btn btn-sm btn-danger" 
-                        onClick={() => {onUserDelete(user._id)}}
+                    <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => { onUserDelete(user._id); }}
                     >delete</button>
                 </td>
             </tr>
@@ -33,7 +33,7 @@ const UsersTableRows = ({users, onUserDelete, onUserBookmarkClick}) => {
         <>
             {users.map(renderRow)}
         </>
-    );    
-}
- 
+    );
+};
+
 export default UsersTableRows;
