@@ -24,6 +24,7 @@ module.exports = {
         'react/prop-types': 'off',
         'object-curly-spacing': 'off',
         'space-before-function-paren': 'off',
-        'comma-dangle': 'off'
+        'comma-dangle': 'off',
+        'no-constant-condition': 'off'
     }
 };

@@ -1,49 +1,97 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { paginate } from '../utils/paginate';
+import GroupList from './groupList';
 import Pagination from './pagination';
+import SearchStatus from './searchStatus';
 import UsersTableRows from './usersTableRows';
+import api from '../API/index';
 
 const UsersTable = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
-    // Pagination
-    const [currentPageNum, setCurrentPageNum] = useState(1);
+    // Professions filter
+    const [professions, setProfessions] = useState();
+    const [selectedProf, setSelectedProf] = useState();
 
+    const handleProfessionSelect = (item) => {
+        setSelectedProf(item);
+    };
+
+    const clearUsersFilter = () => {
+        setSelectedProf(undefined);
+    };
+
+    // Pagination
+    const PAGE_SIZE = 1;
+    const [currentPageNum, setCurrentPageNum] = useState(1);
     const handlePageChange = (pageNum) => {
         setCurrentPageNum(pageNum);
     };
 
-    const PAGE_SIZE = 5;
-    const PAGES_COUNT = Math.ceil(allUsers.length / PAGE_SIZE);
+    // Filtered usr list
+    const filteredUsers = (selectedProf
+        ? allUsers.filter(usr => usr.profession === selectedProf)
+        : allUsers
+    );
+    const FILTERED_USERS_COUNT = filteredUsers.length;
+
+    useEffect(() => {
+        setCurrentPageNum(1);
+    }, [selectedProf]);
+
+    // Recalculate pages count and current page num
+    const PAGES_COUNT = Math.ceil(FILTERED_USERS_COUNT / PAGE_SIZE);
     const CURRENT_PAGE_NUM = currentPageNum > PAGES_COUNT ? PAGES_COUNT : currentPageNum;
-    const users = paginate(allUsers, CURRENT_PAGE_NUM, PAGE_SIZE);
+    const users = paginate(filteredUsers, CURRENT_PAGE_NUM, PAGE_SIZE);
+
+    // Fetch professions
+    useEffect(() => {
+        api.professions.fetchAll().then(data =>
+            setProfessions(data)
+        );
+    }, []);
 
     return (
-        <>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Качетва</th>
-                        <th scope="col">Профессия</th>
-                        <th scope="col">Встретился, раз</th>
-                        <th scope="col">Оценка</th>
-                        <th scope="col">Избранное</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <UsersTableRows
-                        users={users}
-                        onUserDelete={onUserDelete}
-                        onUserBookmarkClick={onUserBookmarkClick}
+        <div className="d-flex">
+            {professions && (
+                <div className="d-flex flex-column flex-shrink-0 p-3">
+                    <GroupList
+                        items={professions}
+                        onItemSelect={handleProfessionSelect}
+                        selectedItem={selectedProf}
                     />
-                </tbody>
-            </table>
-            <Pagination
-                pagesCount={PAGES_COUNT}
-                currentPageNum={CURRENT_PAGE_NUM}
-                onPageChange={handlePageChange}
-            />
-        </>
+                    <button className="btn btn-secondary mt-2" onClick={clearUsersFilter}>Очистить</button>
+                </div>
+            )}
+            <div className="d-flex flex-column">
+                <SearchStatus usersQty={FILTERED_USERS_COUNT}/>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Качетва</th>
+                            <th scope="col">Профессия</th>
+                            <th scope="col">Встретился, раз</th>
+                            <th scope="col">Оценка</th>
+                            <th scope="col">Избранное</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <UsersTableRows
+                            users={users}
+                            onUserDelete={onUserDelete}
+                            onUserBookmarkClick={onUserBookmarkClick}
+                        />
+                    </tbody>
+                </table>
+                <div className="d-flex justify-content-center">
+                    <Pagination
+                        pagesCount={PAGES_COUNT}
+                        currentPageNum={CURRENT_PAGE_NUM}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
+            </div>
+        </div>
     );
 };
 
