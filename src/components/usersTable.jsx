@@ -20,7 +20,7 @@ const UsersTable = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
     };
 
     // Pagination
-    const PAGE_SIZE = 1;
+    const PAGE_SIZE = 8;
     const [currentPageNum, setCurrentPageNum] = useState(1);
     const handlePageChange = (pageNum) => {
         setCurrentPageNum(pageNum);
@@ -28,7 +28,9 @@ const UsersTable = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
 
     // Filtered usr list
     const filteredUsers = (selectedProf
-        ? allUsers.filter(usr => usr.profession === selectedProf)
+        ? allUsers.filter(
+            usr => JSON.stringify(usr.profession) === JSON.stringify(selectedProf)
+        )
         : allUsers
     );
     const FILTERED_USERS_COUNT = filteredUsers.length;
