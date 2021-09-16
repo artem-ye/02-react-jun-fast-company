@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import api from './API/index';
-import UsersTable from './components/usersTable';
+// import UsersTable from './components/usersTable';
+import Users from './components/users';
 
 const App = () => {
     const [users, setUsers] = useState([]);
@@ -22,7 +23,7 @@ const App = () => {
 
     return (
         <>
-            <UsersTable
+            <Users
                 users={users}
                 onUserDelete={deleteUserHandler}
                 onUserBookmarkClick={handlerUserBookmarkToggle}
