@@ -1,14 +1,22 @@
 import React from 'react';
 // import UsersTableRows from './usersTableRows';
 import PropTypes from 'prop-types';
-import TableHeader from './tableHeader';
-import TableBody from './tableBody';
+// import TableHeader from './tableHeader';
+// import TableBody from './tableBody';
 import UsersTableRowBookmark from './usersTableRowBookmark';
+import UsersTableRowQualities from './usersTableRowQualities';
+import Table from './table';
 
 const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSort}) => {
     const columns = {
         name: {name: 'Имя', path: 'name'},
-        qualities: {name: 'Качетва', path: undefined, component: 'qualities'},
+        qualities: {
+            name: 'Качетва',
+            path: undefined,
+            component: (user) => (
+                <UsersTableRowQualities qualities={user.qualities}/>
+            )
+        },
         profession: {name: 'Профессия', path: 'profession.name'},
         completedMeetings: {name: 'Встретился, раз', path: 'completedMeetings'},
         rate: {name: 'Оценка', path: 'rate'},
@@ -33,12 +41,13 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
     };
 
     return (
-        <table className="table">
-            <TableHeader {...{sortParams, onSort, columns}}/>
+        <>
+            <Table {...{sortParams, onSort, columns, data: users}}/>
+            {/* <TableHeader {...{sortParams, onSort, columns}}/>
             <TableBody
                 {...{columns, data: users}}
-            />
-        </table>
+            /> */}
+        </>
     );
 };
 
