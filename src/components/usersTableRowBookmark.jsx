@@ -1,10 +1,12 @@
 import React from 'react';
 
-const UsersTableRowBookmark = ({isFavorite, onUserBookmarkClick}) => {
+const UsersTableRowBookmark = ({user, onUserBookmarkClick}) => {
+    const {isFavorite, _id} = user;
+
     return (
         <i
             className={'bi bi-bookmark' + (isFavorite ? '-heart-fill' : '')}
-            onClick={onUserBookmarkClick}
+            onClick={ () => onUserBookmarkClick(_id) }
         ></i>
     );
 };

@@ -29,14 +29,8 @@ const Users = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
 
     // Sorting
     const [sortParams, setSortParams] = useState({iter: 'name', order: 'asc'});
-    const handleSort = (field) => {
-        let order = 'asc';
-
-        if (field === sortParams.iter) {
-            order = (sortParams.order === 'asc' ? 'desc' : 'asc');
-        }
-
-        setSortParams({iter: field, order});
+    const handleSort = (params) => {
+        setSortParams(params);
     };
 
     // Filtered usr list
@@ -84,6 +78,7 @@ const Users = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
                     users={users}
                     onUserDelete={onUserDelete}
                     onUserBookmarkClick={onUserBookmarkClick}
+                    sortParams={sortParams}
                     onSort={handleSort}
                 />
 
