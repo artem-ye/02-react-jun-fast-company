@@ -1,8 +1,5 @@
 import React from 'react';
-// import UsersTableRows from './usersTableRows';
 import PropTypes from 'prop-types';
-// import TableHeader from './tableHeader';
-// import TableBody from './tableBody';
 import UsersTableRowBookmark from './usersTableRowBookmark';
 import UsersTableRowQualities from './usersTableRowQualities';
 import Table from './table';
@@ -41,13 +38,7 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
     };
 
     return (
-        <>
-            <Table {...{sortParams, onSort, columns, data: users}}/>
-            {/* <TableHeader {...{sortParams, onSort, columns}}/>
-            <TableBody
-                {...{columns, data: users}}
-            /> */}
-        </>
+        <Table {...{sortParams, onSort, columns, data: users}}></Table>
     );
 };
 

@@ -7,7 +7,24 @@ import api from '../API/index';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 
-const Users = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
+const Users = () => {
+    const [allUsers, setAllUsers] = useState([]);
+
+    const handleUserDelete = (userId) => {
+        setAllUsers(allUsers.filter(usr => usr._id !== userId));
+    };
+
+    useEffect(() => {
+        api.users.fetchAll().then(setAllUsers);
+    }, []);
+
+    const handlerUserBookmarkToggle = (userId) => {
+        const newUsersState = [...allUsers];
+        const el = newUsersState.find(el => el._id === userId);
+        el.isFavorite = !el.isFavorite;
+        setAllUsers(newUsersState);
+    };
+
     // Professions filter
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
@@ -76,8 +93,8 @@ const Users = ({ users: allUsers, onUserDelete, onUserBookmarkClick }) => {
 
                 <UsersTable
                     users={users}
-                    onUserDelete={onUserDelete}
-                    onUserBookmarkClick={onUserBookmarkClick}
+                    onUserDelete={handleUserDelete}
+                    onUserBookmarkClick={handlerUserBookmarkToggle}
                     sortParams={sortParams}
                     onSort={handleSort}
                 />

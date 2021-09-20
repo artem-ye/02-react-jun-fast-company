@@ -12,8 +12,8 @@ const TableHeader = ({sortParams, onSort, columns}) => {
         onSort({iter: field, order});
     };
 
-    const renderSortCaret = (path) => {
-        if (path !== sortParams.iter) return null;
+    const renderSortCaret = (currentPath) => {
+        if (currentPath !== sortParams.iter) return null;
 
         return (
             <i className={'bi bi-caret-' + (sortParams.order === 'asc' ? 'up' : 'down') + '-fill'}></i>
