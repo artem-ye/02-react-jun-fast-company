@@ -7,7 +7,7 @@ import api from '../API/index';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 
-const Users = () => {
+const UsersList = () => {
     const [allUsers, setAllUsers] = useState([]);
 
     const handleUserDelete = (userId) => {
@@ -111,4 +111,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default UsersList;
