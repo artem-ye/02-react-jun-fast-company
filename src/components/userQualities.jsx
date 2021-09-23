@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const UsersTableRowQualities = ({qualities}) => {
+const UserQualities = ({qualities}) => {
     const renderQuality = quality => (
         <span
             key={quality._id}
@@ -16,8 +16,8 @@ const UsersTableRowQualities = ({qualities}) => {
     );
 };
 
-UsersTableRowQualities.protoTypes = {
+UserQualities.protoTypes = {
     qualities: PropTypes.array.isRequired
 };
 
-export default UsersTableRowQualities;
+export default UserQualities;

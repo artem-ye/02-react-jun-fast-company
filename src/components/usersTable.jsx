@@ -1,17 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UsersTableRowBookmark from './usersTableRowBookmark';
-import UsersTableRowQualities from './usersTableRowQualities';
+import { Link } from 'react-router-dom';
+
 import Table from './table';
+import UsersTableRowBookmark from './usersTableRowBookmark';
+import UserQualities from './userQualities';
 
 const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSort}) => {
     const columns = {
-        name: {name: 'Имя', path: 'name'},
+        name: {
+            name: 'Имя',
+            path: 'name',
+            component: (user) => (
+                <Link to={`/users/${user._id}`}>{user.name}</Link>
+            )
+        },
         qualities: {
             name: 'Качетва',
             path: undefined,
             component: (user) => (
-                <UsersTableRowQualities qualities={user.qualities}/>
+                <UserQualities qualities={user.qualities}/>
             )
         },
         profession: {name: 'Профессия', path: 'profession.name'},
