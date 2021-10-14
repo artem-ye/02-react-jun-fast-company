@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import api from '../API/index';
-import UserQualities from './userQualities';
+import api from '../../../API/index';
+import UserQualities from '../../ui/qualities/userQualities';
 import PropTypes from 'prop-types';
 
-const UserCard = ({userId}) => {
+const UserPage = ({userId}) => {
     const [user, setUser] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
@@ -39,8 +39,8 @@ const UserCard = ({userId}) => {
     );
 };
 
-UserCard.propTypes = {
+UserPage.propTypes = {
     userId: PropTypes.string.isRequired
 };
 
-export default UserCard;
+export default UserPage;

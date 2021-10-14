@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import { paginate } from '../utils/paginate';
-import GroupList from './groupList';
-import Pagination from './pagination';
-import SearchStatus from './searchStatus';
-import api from '../API/index';
-import UsersTable from './usersTable';
+import { paginate } from '../../../utils/paginate';
+// import GroupList from './groupList';
+import GroupList from '../../common/groupList';
+import Pagination from '../../common//pagination';
+import SearchStatus from '../../ui/searchStatus';
+import api from '../../../API/index';
+import UsersTable from '../../ui/usersTable';
 import _ from 'lodash';
 
-const UsersList = () => {
+const UsersListPage = () => {
     const [allUsers, setAllUsers] = useState([]);
 
     const handleUserDelete = (userId) => {
@@ -111,4 +112,4 @@ const UsersList = () => {
     );
 };
 
-export default UsersList;
+export default UsersListPage;
