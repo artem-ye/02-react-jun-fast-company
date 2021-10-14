@@ -29,14 +29,6 @@ const Login = () => {
     const validate = () => {
         const errors = validator(data, validatorConfig);
 
-        // const errors = {};
-
-        // Object.entries(data).forEach(([field, data]) => {
-        //     if (!data.trim()) {
-        //         errors[field] = 'Поле ' + field + ' обязательно для заполнения';
-        //     }
-        // });
-
         setErrors(errors);
         return (Object.keys(errors).length === 0);
     };

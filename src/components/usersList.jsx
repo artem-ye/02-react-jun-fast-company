@@ -6,6 +6,7 @@ import SearchStatus from './searchStatus';
 import api from '../API/index';
 import UsersTable from './usersTable';
 import _ from 'lodash';
+import TextField from './textField';
 
 const UsersList = () => {
     const [allUsers, setAllUsers] = useState([]);
@@ -30,11 +31,29 @@ const UsersList = () => {
     const [selectedProf, setSelectedProf] = useState();
 
     const handleProfessionSelect = (item) => {
-        setSelectedProf(item);
+        handleFilterDataChange('profession', item);
+        // setSelectedProf(item);
     };
 
     const clearUsersFilter = () => {
         setSelectedProf(undefined);
+    };
+
+    // Filtering
+    const filterDataInitialState = {
+        name: '',
+        profession: undefined
+    };
+    const [filterData, setFilterData] = useState(filterDataInitialState);
+    const handleFilterDataChange = (key, val) => {
+        const newState = {...filterDataInitialState, [key]: val};
+        setFilterData(newState);
+        setSelectedProf(newState.profession);
+    };
+
+    // Search bar
+    const handleSearchBarChange = (e) => {
+        handleFilterDataChange('name', e.target.value);
     };
 
     // Pagination
@@ -51,12 +70,16 @@ const UsersList = () => {
     };
 
     // Filtered usr list
-    const filteredUsers = (selectedProf
-        ? allUsers.filter(
-            usr => JSON.stringify(usr.profession) === JSON.stringify(selectedProf)
-        )
-        : allUsers
-    );
+    let filteredUsers = allUsers;
+
+    if (filterData.profession) {
+        filteredUsers = filteredUsers.filter(
+            usr => JSON.stringify(usr.profession) === JSON.stringify(filterData.profession)
+        );
+    } else if (filterData.name) {
+        filteredUsers = filteredUsers.filter(usr => usr.name.includes(filterData.name));
+    };
+
     const FILTERED_USERS_COUNT = filteredUsers.length;
 
     useEffect(() => {
@@ -90,6 +113,14 @@ const UsersList = () => {
             )}
             <div className="d-flex flex-column">
                 <SearchStatus usersQty={FILTERED_USERS_COUNT}/>
+
+                <TextField
+                    labelContent=""
+                    name="searchBar"
+                    value={filterData.searchBar}
+                    onChange={handleSearchBarChange}
+                    error={null}
+                />
 
                 <UsersTable
                     users={users}
