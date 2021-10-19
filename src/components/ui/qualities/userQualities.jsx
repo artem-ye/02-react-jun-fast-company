@@ -1,17 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Quality from './qality';
 
 const UserQualities = ({qualities}) => {
-    const renderQuality = quality => (
-        <span
-            key={quality._id}
-            className={`badge m-1 bg-${quality.color}`}
-        >{quality.name}</span>
-    );
-
     return (
         <>
-            {qualities.map(renderQuality)}
+            {
+                qualities.map((quality, key) => (<Quality key={key} quality={quality}/>))
+            }
         </>
     );
 };

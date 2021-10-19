@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
-import Table from './table';
-import UsersTableRowBookmark from './usersTableRowBookmark';
-import UserQualities from './userQualities';
+import Table from '../common/table';
+import Bookmark from '../common/bookmark';
+// import UserQualities from '../ui/qualities/userQualities';
+import Qualities from './qualities';
 
 const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSort}) => {
     const columns = {
@@ -19,7 +19,7 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
             name: 'Качетва',
             path: undefined,
             component: (user) => (
-                <UserQualities qualities={user.qualities}/>
+                <Qualities qualities={user.qualities}/>
             )
         },
         profession: {name: 'Профессия', path: 'profession.name'},
@@ -29,7 +29,7 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
             name: 'Избранное',
             path: 'isFavorite',
             component: (user) => (
-                <UsersTableRowBookmark
+                <Bookmark
                     user={user}
                     onUserBookmarkClick={onUserBookmarkClick}
                 />

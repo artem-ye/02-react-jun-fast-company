@@ -8,7 +8,11 @@ function validate(validateMethod, data, validateMethodConfig) {
 
     switch (validateMethod) {
     case 'isRequired':
-        isDataValid = (data.trim() !== '');
+        if (typeof data === 'boolean') {
+            isDataValid = !!data;
+        } else {
+            isDataValid = (data.trim() !== '');
+        }
         break;
     case 'isEmail':
         isDataValid = REGEX_EMAIL.test(data);
@@ -34,6 +38,8 @@ export function validator(data, config) {
 
     for (const [fieldName, fieldData] of Object.entries(data)) {
         const fieldConf = config[fieldName];
+
+        if (!fieldConf) continue;
 
         for (const [validateMethod, validateMethodConfig] of Object.entries(fieldConf)) {
             const error = validate(validateMethod, fieldData, validateMethodConfig);

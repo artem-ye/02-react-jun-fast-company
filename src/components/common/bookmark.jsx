@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const UsersTableRowBookmark = ({user, onUserBookmarkClick}) => {
+const Bookmark = ({user, onUserBookmarkClick}) => {
     const {isFavorite, _id} = user;
 
     return (
@@ -12,9 +12,9 @@ const UsersTableRowBookmark = ({user, onUserBookmarkClick}) => {
     );
 };
 
-UsersTableRowBookmark.propTypes = {
+Bookmark.propTypes = {
     user: PropTypes.object.isRequired,
     onUserBookmarkClick: PropTypes.func.isRequired
 };
 
-export default UsersTableRowBookmark;
+export default Bookmark;
