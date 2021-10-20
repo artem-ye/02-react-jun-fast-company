@@ -4,9 +4,9 @@ import UserPage from '../components/page/userPage';
 import UsersListPage from '../components/page/usersListPage';
 
 const UsersLayout = () => {
-    const userId = useParams().userId;
+    const {userId, mode} = useParams();
     return (
-        userId ? <UserPage userId={userId}/> : <UsersListPage/>
+        userId ? <UserPage userId={userId} mode={mode}/> : <UsersListPage/>
     );
 };
 
