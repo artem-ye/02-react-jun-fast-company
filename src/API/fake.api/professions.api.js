@@ -17,10 +17,18 @@ export const professions = [
 const fetchAll = () =>
     new Promise((resolve) => {
         window.setTimeout(function () {
+            resolve(professions);
+        }, 2000);
+    });
+
+const fetchAllAsObject = () =>
+    new Promise((resolve) => {
+        window.setTimeout(function () {
             resolve(professionsObject);
         }, 2000);
     });
 
 export default {
-    fetchAll
+    fetchAll,
+    fetchAllAsObject
 };

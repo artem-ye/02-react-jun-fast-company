@@ -8,7 +8,15 @@ import UserEditForm from '../../ui/userEditForm';
 
 const UserPage = ({userId, mode}) => {
     if (mode === 'edit') {
-        return (<UserEditForm userId={userId}/>);
+        return (
+            <div className="container mt-5">
+                <div className="row">
+                    <div className='col-md-6 offset-md-3 p-4 shadow'>
+                        <UserEditForm userId={userId}/>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (<UserCard userId={userId}/>);
