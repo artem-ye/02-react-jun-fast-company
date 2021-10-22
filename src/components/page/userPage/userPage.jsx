@@ -3,7 +3,7 @@ import React from 'react';
 // import api from '../../../API/index';
 // import UserQualities from '../../ui/qualities/userQualities';
 import PropTypes from 'prop-types';
-import UserCard from '../../ui/userCard';
+import UserCard from '../../ui/userCard/';
 import UserEditForm from '../../ui/userEditForm';
 
 const UserPage = ({userId, mode}) => {
