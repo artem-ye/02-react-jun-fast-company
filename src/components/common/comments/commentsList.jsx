@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import API from '../../../../API';
+import API from '../../../API';
 import Comment from './comment';
 import NewCommentForm from './newCommentForm';
 
@@ -19,11 +19,18 @@ const CommentsList = ({userId}) => {
         setComments(comments.filter(comment => comment._id !== commentId));
     };
 
+    const handleCommentAdd = (data) => {
+        API.comments.add({...data, pageId: userId})
+            .then(newComment =>
+                setComments((prevState) => [newComment, ...prevState])
+            );
+    };
+
     return (
         <>
             <div className="card mb-2">
                 <div className="card-body ">
-                    <NewCommentForm userId={userId}/>
+                    <NewCommentForm pageId={userId} onSubmit={handleCommentAdd}/>
                 </div>
             </div>
             <div className="card mb-3">

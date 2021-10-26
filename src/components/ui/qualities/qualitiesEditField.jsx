@@ -8,8 +8,12 @@ const QualitiesEditField = ({label, name, value, onChange}) => {
     const [qualities, setQualities] = useState(defaultQualities);
 
     useEffect(() => {
+        let isAborted = false;
         API.qualities.fetchAll()
-            .then(data => setQualities(data));
+            .then(data => {
+                if (!isAborted) setQualities(data);
+            });
+        return () => (isAborted=true);
     }, []);
 
     const qualitiesToOptions = (qualities) => Object.values(qualities).map(

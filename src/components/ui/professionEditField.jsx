@@ -7,7 +7,16 @@ const ProfessionEditField = ({label, name, value, onChange, error}) => {
     const [professions, setProfessions] = useState(!value ? [] : [value]);
 
     useEffect(() => {
-        API.professions.fetchAll().then(res => setProfessions(res));
+        let isAborted = false;
+
+        API.professions.fetchAll()
+            .then(res => {
+                if (!isAborted) setProfessions(res);
+            });
+
+        return () => {
+            isAborted = true;
+        };
     }, []);
 
     const professionsToOptions = (professions) => Object.values(professions).map(

@@ -1,5 +1,6 @@
 import React from 'react';
-import Avatar from '../../avatar';
+import Avatar from '../../../common/avatar';
+// import Avatar from '../../../common/avatar';
 
 const InfoCard = ({user, onEditClick}) => {
     return (

@@ -6,7 +6,8 @@ import API from '../../../API';
 import InfoCard from './userInfo/infoCard';
 import QualitiesCard from './userInfo/qualitiesCard';
 import MeetingsCard from './userInfo/meetingsCard';
-import CommentsList from './comments/commentsList';
+import CommentsList from '../../common/comments/commentsList';
+// import CommentsList from './comments/commentsList';
 
 const UserCard = ({userId}) => {
     const [user, setUser] = useState(undefined);
@@ -26,7 +27,7 @@ const UserCard = ({userId}) => {
     if (!user) return (<h3>User {userId} not found</h3>);
 
     const handleEditUser = () => {
-        history.push('/users/'+userId+'/edit');
+        history.push(history.location.pathname + '/edit');
     };
 
     return (

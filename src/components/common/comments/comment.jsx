@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import API from '../../../../API';
-import getDateDiffMoment from '../../../../utils/dateMoment';
-import Avatar from '../../avatar';
+import API from '../../../API';
+import displayDate from '../../../utils/dateMoment';
+import Avatar from '../avatar';
 
 const Comment = ({data, handleDelete}) => {
     const [commentAuthor, setCommentAuthor] = useState({});
 
     useEffect(() => {
+        let isAborted = false;
         API.users.getById(data.userId).then(res => {
-            setCommentAuthor(res);
+            if (!isAborted) setCommentAuthor(res);
         });
+
+        return () => (isAborted=true);
     }, []);
 
     const onDeleteClick = (id) => {
@@ -33,7 +36,7 @@ const Comment = ({data, handleDelete}) => {
                                     <p className="mb-1 ">
                                         {commentAuthor.name}&nbsp;
                                         <span className="small">
-                                            {getDateDiffMoment(data.created_at)}
+                                            {displayDate(data.created_at)}
                                         </span>
                                     </p>
                                     <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => onDeleteClick(data._id)}>

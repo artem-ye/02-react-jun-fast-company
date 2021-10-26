@@ -16,7 +16,7 @@ const TextAreaField = ({label, name, value, onChange, error}) => {
         <div className='mb-4'>
             <div className="mb-4 has-validation">
                 <label htmlFor={domId} className="form-label">{label}</label>
-                <textarea className={textAreaClassList} id={domId} rows="3" onChange={handleChange}>{value}</textarea>
+                <textarea className={textAreaClassList} id={domId} rows="3" onChange={handleChange} value={value}></textarea>
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
 

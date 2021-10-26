@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import API from '../../../../API';
-import SelectField from '../../../common/form/selectField';
-import TextAreaField from '../../../common/form/textAreaField';
-import {validator} from '../../../../utils/validator';
+import API from '../../../API';
+import {validator} from '../../../utils/validator';
+import SelectField from '../form/selectField';
+import TextAreaField from '../form/textAreaField';
 
-const NewCommentForm = ({userId}) => {
+const initialState = {content: '', userId: ''};
+
+const NewCommentForm = ({pageId, onSubmit}) => {
     const [users, setUsers] = useState([]);
-    const [data, setData] = useState({pageId: userId});
+    const [data, setData] = useState(initialState);
     const [errors, setErrors] = useState({});
 
     const validatorConfig = {
@@ -17,19 +19,30 @@ const NewCommentForm = ({userId}) => {
             isRequired: {message: 'Не выбран получатель сообщения'}
         }
     };
-    const validate = () => {
-        const initialState = {content: '', userId: ''};
-        const validateData = {...initialState, ...data};
 
-        const errors = validator(validateData, validatorConfig);
+    const validate = () => {
+        const errors = validator(data, validatorConfig);
         setErrors(errors);
         return (Object.keys(errors).length === 0);
     };
 
+    const clear = () => {
+        setData(initialState);
+        setErrors({});
+    };
+
     useEffect(() => {
+        let isAborted = false;
+
         API.users.fetchAll().then(res => {
-            setUsers(res.filter(usr => usr._id.toString() !== userId));
-        });
+            if (!isAborted) {
+                setUsers(res.filter(usr => usr._id.toString() !== pageId));
+            }
+        }).catch(e => console.log('NewCommentForm API.users.fetchAll() error'));
+
+        return () => {
+            isAborted = true;
+        };
     }, []);
 
     const handleChange = (data) => {
@@ -43,9 +56,8 @@ const NewCommentForm = ({userId}) => {
             return;
         }
 
-        API.comments.add(data).then(res => {
-            document.location = '/users/' + userId;
-        });
+        onSubmit(data);
+        clear();
     };
 
     return (
