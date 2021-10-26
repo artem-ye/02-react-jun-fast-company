@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SelectField = ({label, value, onChange, defaultOption, options, error}) => {
+const SelectField = ({label, value, name, onChange, defaultOption, options, error}) => {
     const getInputClassList = () => {
         return 'form-select' + (error ? ' is-invalid' : '');
     };
@@ -21,7 +21,7 @@ const SelectField = ({label, value, onChange, defaultOption, options, error}) =>
             <select
                 className={getInputClassList()}
                 id="validationDefault04"
-                name="profession"
+                name={name}
                 value={value}
                 onChange={handleChange}
             >

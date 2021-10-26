@@ -21,6 +21,14 @@ const fetchAll = () =>
         }, 2000);
     });
 
+const fetchAllAsObject = () =>
+    new Promise((resolve) => {
+        window.setTimeout(function () {
+            resolve(professionsObject);
+        }, 2000);
+    });
+
 export default {
-    fetchAll
+    fetchAll,
+    fetchAllAsObject
 };
