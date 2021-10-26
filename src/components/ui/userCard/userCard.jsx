@@ -38,20 +38,9 @@ const UserCard = ({userId}) => {
                     <QualitiesCard qualities={user.qualities}/>
                     <MeetingsCard quantity={user.completedMeetings}></MeetingsCard>
                 </div>
-                <div className="col-md-4 mb-3">
+                <div className="col-md-8">
                     <CommentsList userId={userId}/>
                 </div>
-
-                {/* <div>
-                    <h2>{user.name}</h2>
-                    <h4>{user.profession.name}</h4>
-                    <div>
-                        <UserQualities qualities={user.qualities}/>
-                    </div>
-                    <span>Встретился: {user.completedMeetings}</span>
-                    <h4>Оценка: {user.rate}</h4>
-                    <button onClick={handleEditUser}>Изменить</button>
-                </div> */}
             </div>
         </div>
     );

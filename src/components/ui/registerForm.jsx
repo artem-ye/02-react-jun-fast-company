@@ -93,6 +93,7 @@ const RegisterForm = () => {
             />
             <SelectField
                 label={'Профессия'}
+                name='profession'
                 value={data.profession}
                 onChange={handleChange}
                 options={

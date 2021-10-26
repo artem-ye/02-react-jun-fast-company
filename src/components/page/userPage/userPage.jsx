@@ -5,11 +5,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserCard from '../../ui/userCard/';
 import UserEditForm from '../../ui/userEditForm';
+import { useHistory } from 'react-router';
 
 const UserPage = ({userId, mode}) => {
+    const history = useHistory();
+    const onBackBtnClick = () => {
+        history.goBack();
+    };
+
     if (mode === 'edit') {
         return (
             <div className="container mt-5">
+                <button
+                    className="btn btn-primary position-absolute"
+                    style={{left: '15px', top: '50px'}}
+                    onClick={onBackBtnClick}
+                >Назад</button>
                 <div className="row">
                     <div className='col-md-6 offset-md-3 p-4 shadow'>
                         <UserEditForm userId={userId}/>

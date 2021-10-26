@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import API from '../../../../API';
+import getDateDiffMoment from '../../../../utils/dateMoment';
 import Avatar from '../../avatar';
 
-const Comment = ({data}) => {
+const Comment = ({data, handleDelete}) => {
     const [commentAuthor, setCommentAuthor] = useState({});
 
     useEffect(() => {
@@ -10,6 +11,10 @@ const Comment = ({data}) => {
             setCommentAuthor(res);
         });
     }, []);
+
+    const onDeleteClick = (id) => {
+        handleDelete(id);
+    };
 
     return (
         <div className="bg-light card-body  mb-3">
@@ -28,10 +33,10 @@ const Comment = ({data}) => {
                                     <p className="mb-1 ">
                                         {commentAuthor.name}&nbsp;
                                         <span className="small">
-                                            {data.created_at}
+                                            {getDateDiffMoment(data.created_at)}
                                         </span>
                                     </p>
-                                    <button className="btn btn-sm text-primary d-flex align-items-center">
+                                    <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => onDeleteClick(data._id)}>
                                         <i className="bi bi-x-lg"></i>
                                     </button>
                                 </div>
