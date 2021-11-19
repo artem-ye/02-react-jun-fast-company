@@ -1,29 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import { paginate } from '../../../utils/paginate';
-// import GroupList from './groupList';
 import GroupList from '../../common/groupList';
 import Pagination from '../../common//pagination';
 import SearchStatus from '../../ui/searchStatus';
 import api from '../../../API/index';
 import UsersTable from '../../ui/usersTable';
 import _ from 'lodash';
+import { useUsers } from '../../../hooks/useUsers';
 
 const UsersListPage = () => {
-    const [allUsers, setAllUsers] = useState([]);
-
+    // const [allUsers] = useState([]);
+    const allUsers = useUsers();
     const handleUserDelete = (userId) => {
-        setAllUsers(allUsers.filter(usr => usr._id !== userId));
+        // setAllUsers(allUsers.filter(usr => usr._id !== userId));
     };
 
-    useEffect(() => {
-        api.users.fetchAll().then(setAllUsers);
-    }, []);
-
     const handlerUserBookmarkToggle = (userId) => {
-        const newUsersState = [...allUsers];
-        const el = newUsersState.find(el => el._id === userId);
-        el.isFavorite = !el.isFavorite;
-        setAllUsers(newUsersState);
+        // const newUsersState = [...allUsers];
+        // const el = newUsersState.find(el => el._id === userId);
+        // el.isFavorite = !el.isFavorite;
+        // console.log(allUsers[0]);
+        // setAllUsers(newUsersState);
     };
 
     // Professions filter

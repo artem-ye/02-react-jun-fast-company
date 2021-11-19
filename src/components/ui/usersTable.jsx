@@ -5,6 +5,7 @@ import Table from '../common/table';
 import Bookmark from '../common/bookmark';
 // import UserQualities from '../ui/qualities/userQualities';
 import Qualities from './qualities';
+import Profession from './profession';
 
 const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSort}) => {
     const columns = {
@@ -22,7 +23,14 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
                 <Qualities qualities={user.qualities}/>
             )
         },
-        profession: {name: 'Профессия', path: 'profession.name'},
+        profession: {
+            name: 'Профессия',
+            path: undefined,
+            component: (user) => (
+                <Profession id={user.profession}/>
+            )
+        },
+
         completedMeetings: {name: 'Встретился, раз', path: 'completedMeetings'},
         rate: {name: 'Оценка', path: 'rate'},
         bookmark: {
