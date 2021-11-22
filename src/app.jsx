@@ -15,16 +15,16 @@ const App = () => {
             <Switch>
                 <ProfessionProvider>
                     <QualitiesProvider>
+
                         <Route path="/login/:type?" exact component={Login}></Route>
                         <Route path="/users/:userId?/:mode?" exact component={Users}></Route>
+                        <Route path="/" exact component={Main}></Route>
+                        <Redirect to="/" />
+
                     </QualitiesProvider>
-                    {/* <Route path="/login/:type?" exact component={Login}></Route>
-                    <Route path="/users/:userId?/:mode?" exact component={Users}></Route> */}
                 </ProfessionProvider>
-                <Route path="/" exact component={Main}></Route>
-                <Redirect to="/" />
             </Switch>
-            <ToastContainer></ToastContainer>
+            <ToastContainer/>
         </>
     );
 };

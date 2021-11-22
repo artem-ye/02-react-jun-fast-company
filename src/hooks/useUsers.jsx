@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import userService from '../services/user.service';
 
-const UserContext = React.createContext();
+const UserContext = React.createContext([]);
 
 export const useUsers = () => {
     return useContext(UserContext);
 };
 
 export const UserProvider = ({children}) => {
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
