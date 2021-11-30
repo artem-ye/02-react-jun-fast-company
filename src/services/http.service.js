@@ -2,9 +2,11 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 import appConfig from '../config.json';
 
-axios.defaults.baseURL = appConfig.apiEndPoint;
+const http = axios.create({
+    baseURL: appConfig.apiEndPoint
+});
 
-axios.interceptors.request.use(
+http.interceptors.request.use(
     (config) => {
         if (appConfig.isFireBase) {
             let url = config.url;
@@ -19,7 +21,7 @@ axios.interceptors.request.use(
     }
 );
 
-axios.interceptors.response.use(
+http.interceptors.response.use(
     (successResp) => {
         if (appConfig.isFireBase) {
             successResp.data = {
@@ -43,10 +45,10 @@ axios.interceptors.response.use(
 );
 
 const httpService = {
-    get: axios.get,
-    post: axios.post,
-    put: axios.put,
-    delete: axios.delete
+    get: http.get,
+    post: http.post,
+    put: http.put,
+    delete: http.delete
 };
 
 export default httpService;

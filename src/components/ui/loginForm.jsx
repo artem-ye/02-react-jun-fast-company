@@ -3,12 +3,17 @@ import { useState, useEffect } from 'react/cjs/react.development';
 import TextField from '../common/form/textField';
 import {validator} from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
+import { useAuth } from '../../hooks/useAuth';
+import { useHistory } from 'react-router';
 
 const LoginForm = () => {
+    const history = useHistory();
     const initialDataState = {email: '', password: '', stayOn: false};
     const [data, setData] = useState(initialDataState);
+    const {signIn} = useAuth();
 
     const [errors, setErrors] = useState({});
+    const [authError, setAuthError] = useState(null);
 
     useEffect(() => {
         validate();
@@ -16,14 +21,10 @@ const LoginForm = () => {
 
     const validatorConfig = {
         email: {
-            isRequired: {message: 'Адрес эл. почты обязателен для заполнения'},
-            isEmail: {message: 'Адрес эл. имеет не верный формат'}
+            isRequired: {message: 'Адрес эл. почты обязателен для заполнения'}
         },
         password: {
-            isRequired: {message: 'Пароль не может быть пустым'},
-            isCapital: {message: 'Должне содержать большую букву'},
-            isDigit: {message: 'Должне содержать цифры'},
-            minLen: {message: 'Пароль должен быть не менее 8 символов', value: 8}
+            isRequired: {message: 'Пароль не может быть пустым'}
         },
     };
 
@@ -34,12 +35,13 @@ const LoginForm = () => {
     };
 
     const handleChange = (data) => {
+        authError && setAuthError(null);
         setData((prevState) => {
             return {...prevState, [data.name]: data.value};
         });
     };
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = async (evt) => {
         evt.preventDefault();
 
         if (!validate()) {
@@ -47,7 +49,12 @@ const LoginForm = () => {
             return;
         }
 
-        console.log('Submit val', data);
+        try {
+            await signIn(data);
+            history.push('/users');
+        } catch (err) {
+            setAuthError(err.message);
+        };
     };
 
     const isValid = Object.keys(errors).length === 0;
@@ -75,8 +82,8 @@ const LoginForm = () => {
                 name='stayOn'
                 onChange={handleChange}
             >Запомнить меня</CheckBoxField>
-
-            <button type="submit" disabled={ !isValid } className="btn btn-primary w-100 mx-auto mb-4">Submit</button>
+            {authError && <p className="text-danger">{authError}</p>}
+            <button type="submit" disabled={ !isValid || authError } className="btn btn-primary w-100 mx-auto mb-4">Submit</button>
         </form>
     );
 };
