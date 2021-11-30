@@ -1,26 +1,29 @@
 import React, {useState, useEffect} from 'react';
 import {validator} from '../../utils/validator';
 import TextField from '../common/form/textField';
-import api from '../../API';
+
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
 
+import {useQualities} from '../../hooks/useQualities';
+import {useProfessions} from '../../hooks/useProfessions';
+import { useAuth } from '../../hooks/useAuth';
+import { useHistory } from 'react-router-dom';
+
 const RegisterForm = () => {
+    const history = useHistory();
+
     const initialDataState = {
         email: '', password: '', profession: '', sex: 'male', qualities: [], licence: false
     };
     const [data, setData] = useState(initialDataState);
-    const [professions, setProfessions] = useState();
     const [errors, setErrors] = useState({});
-    const [qualities, setQualities] = useState({});
 
-    // Fetch professions
-    useEffect(() => {
-        api.professions.fetchAll().then(data => setProfessions(data));
-        api.qualities.fetchAll().then(data => setQualities(data));
-    }, []);
+    const {qualities} = useQualities();
+    const {professions} = useProfessions();
+    const {signUp} = useAuth();
 
     useEffect(() => {
         validate();
@@ -57,7 +60,7 @@ const RegisterForm = () => {
         });
     };
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = async (evt) => {
         evt.preventDefault();
 
         if (!validate()) {
@@ -65,7 +68,17 @@ const RegisterForm = () => {
             return;
         }
 
-        console.log('Submit val', data);
+        const submitData = {
+            ...data,
+            qualities: data.qualities.map(quality => quality.value)
+        };
+
+        try {
+            await signUp(submitData);
+            history.push('/');
+        } catch (err) {
+            setErrors(err);
+        }
     };
 
     const isValid = Object.keys(errors).length === 0;
