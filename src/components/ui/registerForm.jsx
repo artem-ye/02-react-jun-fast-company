@@ -16,7 +16,13 @@ const RegisterForm = () => {
     const history = useHistory();
 
     const initialDataState = {
-        email: '', password: '', profession: '', sex: 'male', qualities: [], licence: false
+        email: '',
+        name: '',
+        password: '',
+        profession: '',
+        sex: 'male',
+        qualities: [],
+        license: false
     };
     const [data, setData] = useState(initialDataState);
     const [errors, setErrors] = useState({});
@@ -34,6 +40,9 @@ const RegisterForm = () => {
             isRequired: {message: 'Адрес эл. почты обязателен для заполнения'},
             isEmail: {message: 'Адрес эл. имеет не верный формат'}
         },
+        name: {
+            isRequired: {message: 'Имя обязательно для заполнения'}
+        },
         password: {
             isRequired: {message: 'Пароль не может быть пустым'},
             isCapital: {message: 'Должне содержать большую букву'},
@@ -43,7 +52,7 @@ const RegisterForm = () => {
         profession: {
             isRequired: {message: 'Профессия должна быть указана'}
         },
-        licence: {
+        license: {
             isRequired: {message: 'Необходимо принять лицензионное соглашение'}
         }
     };
@@ -83,10 +92,6 @@ const RegisterForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    // if (!isValid) {
-    //     console.log(errors);
-    // }
-
     return (
         <form onSubmit={handleSubmit}>
             <TextField
@@ -95,6 +100,13 @@ const RegisterForm = () => {
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
+            />
+            <TextField
+                labelContent="Имя"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                error={errors.name}
             />
             <TextField
                 labelContent="Пароль"
@@ -144,10 +156,10 @@ const RegisterForm = () => {
             />
 
             <CheckBoxField
-                value={data.licence}
-                name='licence'
+                value={data.license}
+                name='license'
                 onChange={handleChange}
-                error={errors.licence}
+                error={errors.license}
             >Принимаю <a>лицензионное соглашение</a></CheckBoxField>
 
             <button type="submit" disabled={ !isValid } className="btn btn-primary w-100 mx-auto mb-4">Submit</button>

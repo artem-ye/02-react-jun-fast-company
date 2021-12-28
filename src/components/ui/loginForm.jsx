@@ -51,7 +51,8 @@ const LoginForm = () => {
 
         try {
             await signIn(data);
-            history.push('/users');
+            const path = history?.location?.state?.from?.pathname || '/';
+            history.push(path);
         } catch (err) {
             setAuthError(err.message);
         };
