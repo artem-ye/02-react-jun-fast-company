@@ -5,13 +5,11 @@ import { useAuth } from '../../hooks/useAuth';
 
 const ProtectedRoute = ({component: Component, children, ...rest}) => {
     const {currentUser} = useAuth();
-    console.log('Cur usr', currentUser);
 
     return (
         <Route {...rest}
             render={(props) => {
                 if (!currentUser) {
-                    console.log('Redirecting....', currentUser);
                     return (
                         <Redirect to={{
                             pathname: '/login',

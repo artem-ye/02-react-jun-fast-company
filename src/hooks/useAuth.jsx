@@ -27,11 +27,15 @@ export const AuthProvider = ({children}) => {
         try {
             const {data} = await httpAuth.post('accounts:signUp', {email, password, returnSecureToken: true});
             setTokens(data);
+            const imgUrl =
+                `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).substring(7)}.svg`.trim().replaceAll('\n', '');
+
             await createUser({
                 _id: data.localId,
                 email,
                 rate: 10,
                 completedMeetings: 0,
+                image: imgUrl,
                 ...rest
             });
         } catch (err) {
@@ -44,6 +48,8 @@ export const AuthProvider = ({children}) => {
                     throw errObj;
                 }
             }
+
+            throw new Error('Возникла ошибка. Попробуйте позже');
         }
     };
 
@@ -53,14 +59,17 @@ export const AuthProvider = ({children}) => {
             setTokens(data);
             await getUserData();
         } catch (err) {
-            errorCatcher(err);
-            const {code, message} = err.response.data.error;
+            // const {code, message} = err.response.data.error;
+            const {code} = err.response.data.error;
 
             if (code === 400) {
-                if (message === 'EMAIL_NOT_FOUND' || message === 'INVALID_PASSWORD') {
-                    throw new Error('Ошибка авторизации');
-                }
+                // if (['EMAIL_NOT_FOUND', 'INVALID_PASSWORD', 'INVALID_EMAIL'].includes(message)) {
+                throw new Error('Ошибка авторизации');
+                // }
             }
+
+            errorCatcher(err);
+            throw new Error('Возникла ошибка. Попробуйте позже');
         }
     }
 
@@ -117,8 +126,10 @@ function useErrorCatcher() {
 
     useEffect(() => {
         if (error !== null) {
-            // alert('ERROR OCCURED', error);
-            toast.error(error);
+            const errMsg = 'Network error: ' +
+                error?.response?.status + ' ' +
+                (error?.response?.data?.error?.message || error?.response?.statusText);
+            toast.error(errMsg);
             setError(null);
         }
     }, [error]);

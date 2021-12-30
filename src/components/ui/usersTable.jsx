@@ -7,7 +7,7 @@ import Bookmark from '../common/bookmark';
 import Qualities from './qualities';
 import Profession from './profession';
 
-const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSort}) => {
+const UsersTable = ({users, onUserBookmarkClick, sortParams, onSort}) => {
     const columns = {
         name: {
             name: 'Имя',
@@ -42,15 +42,16 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
                     onUserBookmarkClick={onUserBookmarkClick}
                 />
             )
-        },
-        del: {
-            component: (user) => (
-                <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => { onUserDelete(user._id); }}
-                >delete</button>
-            )
-        },
+        }
+        // ,
+        // del: {
+        //     component: (user) => (
+        //         <button
+        //             className="btn btn-sm btn-danger"
+        //             onClick={() => { onUserDelete(user._id); }}
+        //         >delete</button>
+        //     )
+        // },
     };
 
     return (
@@ -60,7 +61,6 @@ const UsersTable = ({users, onUserDelete, onUserBookmarkClick, sortParams, onSor
 
 UsersTable.propTypes = {
     users: PropTypes.array.isRequired,
-    onUserDelete: PropTypes.func.isRequired,
     onUserBookmarkClick: PropTypes.func.isRequired,
     onSort: PropTypes.func.isRequired,
     sortParams: PropTypes.object.isRequired,

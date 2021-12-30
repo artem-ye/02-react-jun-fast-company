@@ -1,24 +1,22 @@
 import React from 'react';
-import Avatar from '../../../common/avatar';
-// import Avatar from '../../../common/avatar';
+import { useAuth } from '../../../../hooks/useAuth';
 
 const InfoCard = ({user, onEditClick}) => {
+    const {currentUser} = useAuth();
+
     return (
         <div className="card mb-3">
             <div className="card-body">
-                <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={onEditClick}>
-                    <i className="bi bi-gear"></i>
-                </button>
+                {user._id === currentUser._id &&
+                    <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={onEditClick}>
+                        <i className="bi bi-gear"></i>
+                    </button>
+                }
                 <div className="d-flex flex-column align-items-center text-center position-relative">
-                    {/* <img
-                        src="https://avatars.dicebear.com/api/avataaars/qweqwdas"
+                    <img
+                        src={user.image}
                         className="rounded-circle"
                         width="150"
-                    /> */}
-                    <Avatar
-                        style={
-                            {width: 150}
-                        }
                     />
                     <div className="mt-3">
                         <h4>{user.name}</h4>

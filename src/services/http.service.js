@@ -48,7 +48,7 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
     (successResp) => {
-        if (appConfig.isFireBase && !successResp.data._id) {
+        if (appConfig.isFireBase && !successResp?.data?._id) {
             successResp.data = {
                 content: Object.values(successResp?.data || {})
             };

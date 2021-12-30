@@ -3,17 +3,15 @@ import { paginate } from '../../../utils/paginate';
 import GroupList from '../../common/groupList';
 import Pagination from '../../common//pagination';
 import SearchStatus from '../../ui/searchStatus';
-import api from '../../../API/index';
 import UsersTable from '../../ui/usersTable';
 import _ from 'lodash';
 import { useUsers } from '../../../hooks/useUsers';
+import { useProfessions } from '../../../hooks/useProfessions';
+import { useAuth } from '../../../hooks/useAuth';
 
 const UsersListPage = () => {
-    // const [allUsers] = useState([]);
-    const allUsers = useUsers();
-    const handleUserDelete = (userId) => {
-        // setAllUsers(allUsers.filter(usr => usr._id !== userId));
-    };
+    const {currentUser} = useAuth();
+    const {users: allUsers} = useUsers();
 
     const handlerUserBookmarkToggle = (userId) => {
         // const newUsersState = [...allUsers];
@@ -24,7 +22,7 @@ const UsersListPage = () => {
     };
 
     // Professions filter
-    const [professions, setProfessions] = useState();
+    const {professions, isLoading: professionsIsLoading} = useProfessions();
     const [selectedProf, setSelectedProf] = useState();
 
     const handleProfessionSelect = (item) => {
@@ -49,12 +47,18 @@ const UsersListPage = () => {
     };
 
     // Filtered usr list
-    const filteredUsers = (selectedProf
-        ? allUsers.filter(
-            usr => JSON.stringify(usr.profession) === JSON.stringify(selectedProf)
-        )
-        : allUsers
-    );
+    const filterUsers = () => {
+        const result = (selectedProf
+            ? allUsers.filter(
+                usr => JSON.stringify(usr.profession) === JSON.stringify(selectedProf)
+            )
+            : allUsers
+        );
+
+        return result.filter(usr => usr._id !== currentUser._id);
+    };
+
+    const filteredUsers = filterUsers();
     const FILTERED_USERS_COUNT = filteredUsers.length;
 
     useEffect(() => {
@@ -67,16 +71,9 @@ const UsersListPage = () => {
     const sortedUsers = _.orderBy(filteredUsers, sortParams.iter, sortParams.order);
     const users = paginate(sortedUsers, CURRENT_PAGE_NUM, PAGE_SIZE);
 
-    // Fetch professions
-    useEffect(() => {
-        api.professions.fetchAll().then(data =>
-            setProfessions(data)
-        );
-    }, []);
-
     return (
         <div className="d-flex">
-            {professions && (
+            {!professionsIsLoading && professions && (
                 <div className="d-flex flex-column flex-shrink-0 p-3">
                     <GroupList
                         items={professions}
@@ -91,7 +88,6 @@ const UsersListPage = () => {
 
                 <UsersTable
                     users={users}
-                    onUserDelete={handleUserDelete}
                     onUserBookmarkClick={handlerUserBookmarkToggle}
                     sortParams={sortParams}
                     onSort={handleSort}

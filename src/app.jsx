@@ -14,6 +14,7 @@ import ProtectedRoute from './components/common/protectedRoute';
 const App = () => {
     return (
         <>
+            <ToastContainer/>
             <AuthProvider>
                 <Navbar />
                 <Switch>
@@ -30,7 +31,6 @@ const App = () => {
                     </ProfessionProvider>
                 </Switch>
             </AuthProvider>
-            <ToastContainer/>
         </>
     );
 };
