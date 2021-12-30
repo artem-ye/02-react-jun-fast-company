@@ -2,26 +2,33 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 
-import API from '../../API';
+// import API from '../../API';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 import ProfessionEditField from './professionEditField';
 import { QualitiesEditField } from './qualities';
 import SexEditField from './sexEditField';
+import { useAuth } from '../../hooks/useAuth';
 
 const UserEditForm = ({userId}) => {
     const history = useHistory();
-    const [user, setUser] = useState(undefined);
-    const [isLoading, setIsLoading] = useState(true);
+    const {currentUser, updateUserData} = useAuth();
+    const [user, setUser] = useState(currentUser);
+
+    // console.log(user);
+
+    // const [isLoading, setIsLoading] = useState(true);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        setIsLoading(true);
-        API.users.getById(userId).then(res => {
-            setIsLoading(false);
-            setUser(res);
-        });
-    }, []);
+        setUser(currentUser);
+        console.log('user changed', currentUser.qualities);
+        // setIsLoading(true);
+        // API.users.getById(userId).then(res => {
+        //     setIsLoading(false);
+        //     setUser(res);
+        // });
+    }, [currentUser]);
 
     useEffect(() => {
         validate();
@@ -49,18 +56,19 @@ const UserEditForm = ({userId}) => {
     const isFormDataValid = () => (Object.keys(errors).length === 0);
 
     const handleChange = (data) => {
+        // console.log(data);
         setUser((prevState) => {
             return {...prevState, [data.name]: data.value};
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        API.users.update(userId, user);
+        await updateUserData({...user, _id: userId});
         history.push('/users/'+userId);
     };
 
-    if (isLoading) return (<h3>Loading...</h3>);
+    // if (isLoading) return (<h3>Loading...</h3>);
     if (!user) return (<h3>User {userId} not found</h3>);
     return (
         <form onSubmit={handleSubmit}>

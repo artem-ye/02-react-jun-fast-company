@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import API from '../../API';
 import SelectField from '../common/form/selectField';
+import {useProfessions} from '../../hooks/useProfessions';
 
-const ProfessionEditField = ({label, name, value, onChange, error}) => {
-    const [professions, setProfessions] = useState(!value ? [] : [value]);
-
-    useEffect(() => {
-        let isAborted = false;
-
-        API.professions.fetchAll()
-            .then(res => {
-                if (!isAborted) setProfessions(res);
-            });
-
-        return () => {
-            isAborted = true;
-        };
-    }, []);
-
+const ProfessionEditField = ({label, name, value: professionId, onChange, error}) => {
+    const {professions} = useProfessions();
     const professionsToOptions = (professions) => Object.values(professions).map(
         ({_id, name}) => ({value: _id, name})
     );
@@ -26,11 +12,11 @@ const ProfessionEditField = ({label, name, value, onChange, error}) => {
     const handleChange = (data) => {
         onChange({
             name,
-            value: professions.find(el => el._id === data.value)
+            value: data.value
         });
     };
 
-    const selectedProfession = value || {};
+    const selectedProfession = professions.find(prof => prof._id === professionId) || {};
 
     return (
         <SelectField
@@ -47,7 +33,7 @@ const ProfessionEditField = ({label, name, value, onChange, error}) => {
 ProfessionEditField.propTypes = {
     label: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    value: PropTypes.object,
+    value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.string
 };

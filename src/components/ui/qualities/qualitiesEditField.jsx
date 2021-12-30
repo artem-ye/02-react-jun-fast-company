@@ -1,44 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+// import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import API from '../../../API';
+// import API from '../../../API';
 import MultiSelectField from '../../common/form/multiSelectField';
+import { useQualities } from '../../../hooks/useQualities';
 
 const QualitiesEditField = ({label, name, value, onChange}) => {
-    const defaultQualities = value || {};
-    const [qualities, setQualities] = useState(defaultQualities);
+    const qualitiesContext = useQualities();
 
-    useEffect(() => {
-        let isAborted = false;
-        API.qualities.fetchAll()
-            .then(data => {
-                if (!isAborted) setQualities(data);
-            });
-        return () => (isAborted=true);
-    }, []);
+    if (qualitiesContext.isLoading) return null;
+    const qualities = qualitiesContext.qualities;
 
-    const qualitiesToOptions = (qualities) => Object.values(qualities).map(
-        ({_id, name, color}) => ({value: _id, label: name})
+    const options = (qualities).map(
+        ({_id, name}) => ({value: _id, label: name})
     );
+    // const defaultValue = value.map(qualityId => options.find(el => el.value === qualityId));
+    const defaultValue = value.map(_id => options.find(opt => opt.value === _id));
 
-    const optionsToQualities = (options) => {
-        const qualitiesValues = Object.values(qualities);
-        return options.map(option => qualitiesValues.find(quality => quality._id === option.value));
-    };
+    // const optionsToQualities = (options) => {
+    //     const qualitiesValues = Object.values(qualities);
+    //     return options.map(option => qualitiesValues.find(quality => quality._id === option.value));
+    // };
 
     const handleChange = (data) => {
-        onChange({
+        const payload = {
             name,
-            value: optionsToQualities(data.value)
-        });
+            value: data.value.map(el => el.value)
+        };
+
+        onChange(payload);
     };
 
     return (
         <MultiSelectField
             label={label}
             name={name}
-            defaultValue={qualitiesToOptions(defaultQualities)}
+            // defaultValue={qualitiesToOptions(defaultQualities)}
+            defaultValue={defaultValue}
             isMulti
-            options={qualitiesToOptions(qualities)}
+            // options={qualitiesToOptions(qualities)}
+            options={options}
             className="basic-multi-select"
             classNamePrefix="select"
             onChange={handleChange}

@@ -63,9 +63,7 @@ export const AuthProvider = ({children}) => {
             const {code} = err.response.data.error;
 
             if (code === 400) {
-                // if (['EMAIL_NOT_FOUND', 'INVALID_PASSWORD', 'INVALID_EMAIL'].includes(message)) {
                 throw new Error('Ошибка авторизации');
-                // }
             }
 
             errorCatcher(err);
@@ -99,6 +97,20 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    async function updateUserData(user) {
+        if (user._id !== currentUser._id) {
+            throw new Error('Fuck!!!');
+        };
+
+        const payload = {...currentUser, ...user};
+
+        try {
+            await createUser(payload);
+        } catch (err) {
+            errorCatcher(err);
+        }
+    }
+
     useEffect(() => {
         if (localStorageService.getAccessToken()) {
             getUserData();
@@ -108,7 +120,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{currentUser, signUp, signIn, logout}}>
+        <AuthContext.Provider value={{currentUser, signUp, signIn, logout, updateUserData}}>
             {isLoading
                 ? (<h1>loading...</h1>)
                 : children

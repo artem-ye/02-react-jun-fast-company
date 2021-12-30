@@ -7,8 +7,7 @@ const Quality = ({id}) => {
     if (isLoading) {
         return null;
     }
-
-    const {color, name} = getQuality(id);
+    const {color, name} = getQuality(id) || {};
 
     return (
         <span

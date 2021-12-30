@@ -9,10 +9,12 @@ import MeetingsCard from './userInfo/meetingsCard';
 import CommentsList from '../../common/comments/commentsList';
 import { useUsers } from '../../../hooks/useUsers';
 import { CommentsProvider } from '../../../hooks/useComments';
+// import { useEffect, useState } from 'react/cjs/react.development';
 
 const UserCard = ({userId}) => {
     const history = useHistory();
     const {getUserById} = useUsers();
+
     const user = getUserById(userId);
 
     if (!user) return (<h3>User {userId} not found</h3>);

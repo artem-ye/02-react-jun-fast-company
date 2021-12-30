@@ -10,10 +10,12 @@ const UserQualities = ({qualities}) => {
     //     return <h1>loadig...</h1>;
     // }
 
+    if (!qualities) return;
+
     return (
         <>
             {
-                qualities.map((qualityId, key) => (<Quality key={key} id={qualityId}/>))
+                qualities.map((quality, key) => (<Quality key={key} id={quality}/>))
             }
         </>
     );
