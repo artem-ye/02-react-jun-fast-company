@@ -38,6 +38,17 @@ export const UserProvider = ({children}) => {
         return users.find((usr) => usr._id === userId);
     }
 
+    function updateUser(userData) {
+        setUsers(prevState => {
+            const newState = [...prevState];
+            const index = newState.findIndex(usr => usr._id === userData._id);
+            if (index >= 0) {
+                newState[index] = {...newState[index], ...userData};
+            }
+            return newState;
+        });
+    }
+
     function errorCatcher(error) {
         if (error?.response?.data?.message) {
             const {message} = error.response.data;
@@ -49,7 +60,7 @@ export const UserProvider = ({children}) => {
     }
 
     return (
-        <UserContext.Provider value={{users, getUserById}}>
+        <UserContext.Provider value={{users, getUserById, updateUser}}>
             {!isLoading ? children : <h1>loading...</h1>}
         </UserContext.Provider>
     );

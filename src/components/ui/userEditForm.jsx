@@ -1,33 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
-
-// import API from '../../API';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 import ProfessionEditField from './professionEditField';
 import { QualitiesEditField } from './qualities';
 import SexEditField from './sexEditField';
 import { useAuth } from '../../hooks/useAuth';
+import { useUsers } from '../../hooks/useUsers';
 
 const UserEditForm = ({userId}) => {
     const history = useHistory();
+    const [errors, setErrors] = useState({});
     const {currentUser, updateUserData} = useAuth();
     const [user, setUser] = useState(currentUser);
-
-    // console.log(user);
-
-    // const [isLoading, setIsLoading] = useState(true);
-    const [errors, setErrors] = useState({});
+    const {updateUser} = useUsers();
 
     useEffect(() => {
         setUser(currentUser);
-        console.log('user changed', currentUser.qualities);
-        // setIsLoading(true);
-        // API.users.getById(userId).then(res => {
-        //     setIsLoading(false);
-        //     setUser(res);
-        // });
     }, [currentUser]);
 
     useEffect(() => {
@@ -56,7 +46,6 @@ const UserEditForm = ({userId}) => {
     const isFormDataValid = () => (Object.keys(errors).length === 0);
 
     const handleChange = (data) => {
-        // console.log(data);
         setUser((prevState) => {
             return {...prevState, [data.name]: data.value};
         });
@@ -64,7 +53,9 @@ const UserEditForm = ({userId}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await updateUserData({...user, _id: userId});
+        const userNewState = {...user, _id: userId};
+        await updateUserData(userNewState);
+        updateUser(userNewState);
         history.push('/users/'+userId);
     };
 
