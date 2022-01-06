@@ -12,7 +12,7 @@ import { useUsers } from '../../hooks/useUsers';
 const UserEditForm = ({userId}) => {
     const history = useHistory();
     const [errors, setErrors] = useState({});
-    const {currentUser, updateUserData} = useAuth();
+    const {currentUser, updateUserData, logout} = useAuth();
     const [user, setUser] = useState(currentUser);
     const {updateUser} = useUsers();
 
@@ -23,6 +23,14 @@ const UserEditForm = ({userId}) => {
     useEffect(() => {
         validate();
     }, [user]);
+
+    useEffect(() => {
+        if (userId !== currentUser._id) {
+            const uri = history.location;
+            logout();
+            history.push(uri);
+        }
+    }, [userId]);
 
     const validatorConfig = {
         email: {
