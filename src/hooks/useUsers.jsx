@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import userService from '../services/user.service';
+import { useAuth } from './useAuth';
 
-const UserContext = React.createContext([]);
+const UserContext = React.createContext({});
 
 export const useUsers = () => {
     return useContext(UserContext);
@@ -12,6 +13,11 @@ export const UserProvider = ({children}) => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const {currentUser} = useAuth();
+
+    useEffect(() => {
+        currentUser && updateUser(currentUser);
+    }, [currentUser]);
 
     useEffect(() => {
         getUsers();

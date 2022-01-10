@@ -7,14 +7,12 @@ import ProfessionEditField from './professionEditField';
 import { QualitiesEditField } from './qualities';
 import SexEditField from './sexEditField';
 import { useAuth } from '../../hooks/useAuth';
-import { useUsers } from '../../hooks/useUsers';
 
 const UserEditForm = ({userId}) => {
     const history = useHistory();
     const [errors, setErrors] = useState({});
-    const {currentUser, updateUserData, logout} = useAuth();
+    const {currentUser, updateUserData} = useAuth();
     const [user, setUser] = useState(currentUser);
-    const {updateUser} = useUsers();
 
     useEffect(() => {
         setUser(currentUser);
@@ -23,14 +21,6 @@ const UserEditForm = ({userId}) => {
     useEffect(() => {
         validate();
     }, [user]);
-
-    useEffect(() => {
-        if (userId !== currentUser._id) {
-            const uri = history.location;
-            logout();
-            history.push(uri);
-        }
-    }, [userId]);
 
     const validatorConfig = {
         email: {
@@ -63,11 +53,9 @@ const UserEditForm = ({userId}) => {
         event.preventDefault();
         const userNewState = {...user, _id: userId};
         await updateUserData(userNewState);
-        updateUser(userNewState);
         history.push('/users/'+userId);
     };
 
-    // if (isLoading) return (<h3>Loading...</h3>);
     if (!user) return (<h3>User {userId} not found</h3>);
     return (
         <form onSubmit={handleSubmit}>
