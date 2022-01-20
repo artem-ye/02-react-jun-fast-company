@@ -5,14 +5,14 @@ import Pagination from '../../common//pagination';
 import SearchStatus from '../../ui/searchStatus';
 import UsersTable from '../../ui/usersTable';
 import _ from 'lodash';
-import { useUsers } from '../../../hooks/useUsers';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import { getProfessions } from '../../../store/professions';
+import { getUsersList } from '../../../store/users';
 
 const UsersListPage = () => {
     const {currentUser} = useAuth();
-    const {users: allUsers} = useUsers();
+    const allUsers = useSelector(getUsersList());
 
     const handlerUserBookmarkToggle = (userId) => {
         // const newUsersState = [...allUsers];

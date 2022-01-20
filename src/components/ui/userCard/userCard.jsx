@@ -5,13 +5,13 @@ import InfoCard from './userInfo/infoCard';
 import QualitiesCard from './userInfo/qualitiesCard';
 import MeetingsCard from './userInfo/meetingsCard';
 import CommentsList from '../../common/comments/commentsList';
-import { useUsers } from '../../../hooks/useUsers';
 import { CommentsProvider } from '../../../hooks/useComments';
+import { useSelector } from 'react-redux';
+import { getUserById } from '../../../store/users';
 
 const UserCard = ({userId}) => {
     const history = useHistory();
-    const {getUserById} = useUsers();
-    const user = getUserById(userId);
+    const user = useSelector(getUserById(userId));
 
     if (!user) return (<h3>User {userId} not found</h3>);
 

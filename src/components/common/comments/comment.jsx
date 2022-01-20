@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useAuth } from '../../../hooks/useAuth';
-import { useUsers } from '../../../hooks/useUsers';
+import { getUserById } from '../../../store/users';
 import displayDate from '../../../utils/dateMoment';
 
 const Comment = ({data, handleDelete}) => {
-    const {getUserById} = useUsers();
-    const [commentAuthor, setCommentAuthor] = useState({});
+    const commentAuthor = useSelector(getUserById(data.userId));
     const {currentUser} = useAuth();
-
-    useEffect(() => {
-        setCommentAuthor(getUserById(data.userId));
-    }, []);
 
     const onDeleteClick = (id) => {
         handleDelete(id);
