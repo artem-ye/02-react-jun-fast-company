@@ -7,14 +7,16 @@ import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
 
-import { useAuth } from '../../hooks/useAuth';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useAuth } from '../../hooks/useAuth';
+// import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { getQualities } from '../../store/qualities';
 import { getProfessions } from '../../store/professions';
+import { signUp } from '../../store/users';
 
 const RegisterForm = () => {
-    const history = useHistory();
+    // const history = useHistory();
+    const dispatch = useDispatch();
 
     const initialDataState = {
         email: '',
@@ -29,7 +31,7 @@ const RegisterForm = () => {
     const [errors, setErrors] = useState({});
     const qualities = useSelector(getQualities());
     const professions = useSelector(getProfessions());
-    const {signUp} = useAuth();
+    // const {signUp} = useAuth();
 
     useEffect(() => {
         validate();
@@ -82,12 +84,14 @@ const RegisterForm = () => {
             qualities: data.qualities.map(quality => quality.value)
         };
 
-        try {
-            await signUp(submitData);
-            history.push('/');
-        } catch (err) {
-            setErrors(err);
-        }
+        dispatch(signUp(submitData));
+
+        // try {
+        //     await signUp(submitData);
+        //     history.push('/');
+        // } catch (err) {
+        //     setErrors(err);
+        // }
     };
 
     const isValid = Object.keys(errors).length === 0;
