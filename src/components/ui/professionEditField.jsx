@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectField from '../common/form/selectField';
-import {useProfessions} from '../../hooks/useProfessions';
+import { useSelector } from 'react-redux';
+import { getProfessions, getProfessionsLoadingStatus } from '../../store/professions';
 
 const ProfessionEditField = ({label, name, value: professionId, onChange, error}) => {
-    const {professions} = useProfessions();
+    const professions = useSelector(getProfessions());
+    const isLoading = useSelector(getProfessionsLoadingStatus());
+
+    if (isLoading) return 'loading...';
+
     const professionsToOptions = (professions) => Object.values(professions).map(
         ({_id, name}) => ({value: _id, name})
     );
