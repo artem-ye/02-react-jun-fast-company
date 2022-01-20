@@ -6,7 +6,8 @@ const qualitiesSlice = createSlice({
     initialState: {
         entities: null,
         isLoading: true,
-        error: null
+        error: null,
+        lastFetch: null
     },
     reducers: {
         qualitiesRequested: (state) => {
@@ -14,6 +15,8 @@ const qualitiesSlice = createSlice({
         },
         qualitiesReceved: (state, action) => {
             state.entities = action.payload;
+            state.lastFetch = Date.now();
+            // console.log('now', Date.now());
             state.isLoading = false;
         },
         qualitiesRequestFailed: (state, action) => {
@@ -25,13 +28,21 @@ const qualitiesSlice = createSlice({
 
 const {reducer: qualitiesReducer, actions} = qualitiesSlice;
 
-const loadQualitiesList = () => async (dispatch) => {
-    dispatch(actions.qualitiesRequested());
-    try {
-        const {content} = await qualityService.get();
-        dispatch(actions.qualitiesReceved(content));
-    } catch (err) {
-        dispatch(actions.qualitiesRequestFailed(err.message));
+function isOutDated(date) {
+    return (Date.now() - date > 10*60*1000);
+}
+
+const loadQualitiesList = () => async (dispatch, getState) => {
+    const {lastFetch} = getState().qualities;
+
+    if (isOutDated(lastFetch)) {
+        dispatch(actions.qualitiesRequested());
+        try {
+            const {content} = await qualityService.get();
+            dispatch(actions.qualitiesReceved(content));
+        } catch (err) {
+            dispatch(actions.qualitiesRequestFailed(err.message));
+        }
     }
 };
 
@@ -44,20 +55,8 @@ const getQalitiesByIds = (qualitiesIds) => (state) => {
             if (findRes !== undefined) {
                 return [...acc, findRes];
             }
-
             return acc;
         }, []);
-
-        // const qualityArray = [];
-
-        // qualitiesIds.forEach(id => {
-        //     const findRes = state.qualities.entities.find(q => q._id === id);
-        //     if (findRes !== undefined) {
-        //         qualityArray.push(findRes);
-        //     }
-        // });
-
-        // return qualityArray;
     }
 };
 

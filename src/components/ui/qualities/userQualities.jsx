@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Quality from './qality';
-import { useSelector } from 'react-redux';
-import { getQalitiesByIds, getQualitiesLoadingStatus } from '../../../store/qualities';
+import { useDispatch, useSelector } from 'react-redux';
+import { getQalitiesByIds, getQualitiesLoadingStatus, loadQualitiesList } from '../../../store/qualities';
 
 const UserQualities = ({qualities}) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(loadQualitiesList());
+    }, []);
+
     if (!qualities) return;
 
     const qualitiesList = useSelector(getQalitiesByIds(qualities));
