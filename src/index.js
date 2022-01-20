@@ -4,15 +4,21 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './app';
 import { BrowserRouter } from 'react-router-dom';
+import { createSore } from './store/createStore';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+
+const store = createSore();
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );
