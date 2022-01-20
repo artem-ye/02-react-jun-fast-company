@@ -1,26 +1,19 @@
 import React from 'react';
-// import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import API from '../../../API';
 import MultiSelectField from '../../common/form/multiSelectField';
-import { useQualities } from '../../../hooks/useQualities';
+import { useSelector } from 'react-redux';
+import { getQualities, getQualitiesLoadingStatus } from '../../../store/qualities';
 
 const QualitiesEditField = ({label, name, value, onChange}) => {
-    const qualitiesContext = useQualities();
+    const qualities = useSelector(getQualities());
+    const isLoading = useSelector(getQualitiesLoadingStatus());
 
-    if (qualitiesContext.isLoading) return null;
-    const qualities = qualitiesContext.qualities;
+    if (isLoading) return null;
 
     const options = (qualities).map(
         ({_id, name}) => ({value: _id, label: name})
     );
-    // const defaultValue = value.map(qualityId => options.find(el => el.value === qualityId));
     const defaultValue = value.map(_id => options.find(opt => opt.value === _id));
-
-    // const optionsToQualities = (options) => {
-    //     const qualitiesValues = Object.values(qualities);
-    //     return options.map(option => qualitiesValues.find(quality => quality._id === option.value));
-    // };
 
     const handleChange = (data) => {
         const payload = {
