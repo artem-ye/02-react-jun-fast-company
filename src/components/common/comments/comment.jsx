@@ -1,12 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../../hooks/useAuth';
-import { getUserById } from '../../../store/users';
+import { getCurrentUserId, getUserById } from '../../../store/users';
 import displayDate from '../../../utils/dateMoment';
 
 const Comment = ({data, handleDelete}) => {
     const commentAuthor = useSelector(getUserById(data.userId));
-    const {currentUser} = useAuth();
+    const currentUserId = useSelector(getCurrentUserId);
 
     const onDeleteClick = (id) => {
         handleDelete(id);
@@ -37,7 +36,7 @@ const Comment = ({data, handleDelete}) => {
                                             {displayDate(data.created_at)}
                                         </span>
                                     </p>
-                                    {data.userId === currentUser._id &&
+                                    {data.userId === currentUserId &&
                                         <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => onDeleteClick(data._id)}>
                                             <i className="bi bi-x-lg"></i>
                                         </button>

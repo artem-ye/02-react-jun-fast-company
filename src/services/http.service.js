@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import appConfig from '../config.json';
-import { httpAuth } from '../hooks/useAuth';
+import httpAuth from '../services/auth.service';
+
 import localStorageService from './localStorage.service';
 
 const http = axios.create({

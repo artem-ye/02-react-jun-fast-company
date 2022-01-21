@@ -8,23 +8,24 @@ import Main from './layouts/main';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './hooks/useAuth';
 import ProtectedRoute from './components/common/protectedRoute';
-import { useEffect } from 'react/cjs/react.development';
-import { useDispatch } from 'react-redux';
-import { loadQualitiesList } from './store/qualities';
-import { loadProfessionsList } from './store/professions';
-import { loadUsersList } from './store/users';
+import AppLoader from './components/ui/hoc/appLoader';
+// import { useEffect } from 'react/cjs/react.development';
+// import { useDispatch } from 'react-redux';
+// import { loadQualitiesList } from './store/qualities';
+// import { loadProfessionsList } from './store/professions';
+// import { loadUsersList } from './store/users';
 
 const App = () => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(loadProfessionsList());
-        dispatch(loadQualitiesList());
-        dispatch(loadUsersList());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(loadProfessionsList());
+    //     dispatch(loadQualitiesList());
+    //     dispatch(loadUsersList());
+    // }, []);
 
     return (
-        <>
+        <AppLoader>
             <ToastContainer/>
             <AuthProvider>
                 <Navbar />
@@ -35,7 +36,7 @@ const App = () => {
                     <Route path="/" exact component={Main}></Route>
                 </Switch>
             </AuthProvider>
-        </>
+        </AppLoader>
     );
 };
 

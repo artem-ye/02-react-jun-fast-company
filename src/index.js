@@ -3,21 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './app';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { createSore } from './store/createStore';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
+import history from './utils/history';
 
 const store = createSore();
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
+            <Router history={history}>
                 <App/>
-            </BrowserRouter>
+            </Router>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root')

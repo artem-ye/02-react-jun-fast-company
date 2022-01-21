@@ -7,11 +7,14 @@ import ProfessionEditField from './professionEditField';
 import { QualitiesEditField } from './qualities';
 import SexEditField from './sexEditField';
 import { useAuth } from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from '../../store/users';
 
 const UserEditForm = ({userId}) => {
     const history = useHistory();
     const [errors, setErrors] = useState({});
-    const {currentUser, updateUserData} = useAuth();
+    const { updateUserData} = useAuth();
+    const currentUser = useSelector(getCurrentUser());
     const [user, setUser] = useState(currentUser);
 
     useEffect(() => {

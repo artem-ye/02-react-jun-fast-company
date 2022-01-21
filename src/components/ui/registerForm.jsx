@@ -7,15 +7,12 @@ import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
 
-// import { useAuth } from '../../hooks/useAuth';
-// import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getQualities } from '../../store/qualities';
 import { getProfessions } from '../../store/professions';
 import { signUp } from '../../store/users';
 
 const RegisterForm = () => {
-    // const history = useHistory();
     const dispatch = useDispatch();
 
     const initialDataState = {
@@ -31,7 +28,6 @@ const RegisterForm = () => {
     const [errors, setErrors] = useState({});
     const qualities = useSelector(getQualities());
     const professions = useSelector(getProfessions());
-    // const {signUp} = useAuth();
 
     useEffect(() => {
         validate();

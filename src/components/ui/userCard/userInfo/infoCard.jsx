@@ -1,13 +1,14 @@
 import React from 'react';
-import { useAuth } from '../../../../hooks/useAuth';
+import { useSelector } from 'react-redux';
+import { getCurrentUserId } from '../../../../store/users';
 
 const InfoCard = ({user, onEditClick}) => {
-    const {currentUser} = useAuth();
+    const currentUserId = useSelector(getCurrentUserId());
 
     return (
         <div className="card mb-3">
             <div className="card-body">
-                {user._id === currentUser._id &&
+                {user._id === currentUserId &&
                     <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={onEditClick}>
                         <i className="bi bi-gear"></i>
                     </button>
