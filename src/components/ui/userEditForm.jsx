@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 import ProfessionEditField from './professionEditField';
 import { QualitiesEditField } from './qualities';
 import SexEditField from './sexEditField';
-import { useAuth } from '../../hooks/useAuth';
-import { useSelector } from 'react-redux';
-import { getCurrentUser } from '../../store/users';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCurrentUser, updateUserData } from '../../store/users';
 
 const UserEditForm = ({userId}) => {
-    const history = useHistory();
+    const dispatch = useDispatch();
     const [errors, setErrors] = useState({});
-    const { updateUserData} = useAuth();
     const currentUser = useSelector(getCurrentUser());
     const [user, setUser] = useState(currentUser);
 
@@ -55,8 +52,9 @@ const UserEditForm = ({userId}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const userNewState = {...user, _id: userId};
-        await updateUserData(userNewState);
-        history.push('/users/'+userId);
+        dispatch(updateUserData(userNewState));
+        // await updateUserData(userNewState);
+        // history.push('/users/'+userId);
     };
 
     if (!user) return (<h3>User {userId} not found</h3>);

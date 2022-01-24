@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadProfessionsList } from '../../../store/professions';
 import { loadQualitiesList } from '../../../store/qualities';
 import { getDataLoadedStatus, getIsLoggedIn, loadUsersList } from '../../../store/users';
-// import { getDataLoadedStatus, loadUsersList } from '../../../store/users';
 
 const AppLoader = ({children}) => {
     const isLoggedIn = useSelector(getIsLoggedIn());

@@ -5,17 +5,6 @@ import userService from '../services/user.service';
 import history from '../utils/history';
 import randomAvatarUrl from '../utils/randomAvatarUrl';
 
-// const INITIAL_STATE = {
-//     entities: null,
-//     isLoading: true,
-//     error: null,
-//     dataLoaded: false,
-//     ...(!localStorageService.getAccessToken()
-//         ? {isLoggedIn: false, auth: null}
-//         : {isLoggedIn: true, auth: {userId: localStorageService.getUserId}}
-//     )
-// };
-
 const INITIAL_STATE = {
     entities: null,
     isLoading: true,
@@ -34,20 +23,8 @@ const INITIAL_STATE = {
     )
 };
 
-// console.log(INITIAL_STATE, localStorageService.getAccessToken());
-
-// console.log(INITITAL_STATE);
-
 const userSlice = createSlice({
     name: 'users',
-    // initialState: {
-    //     entities: null,
-    //     isLoading: true,
-    //     error: null,
-    //     auth: null,
-    //     isLoggedIn: false,
-    //     dataLoaded: false
-    // },
     initialState: INITIAL_STATE,
     reducers: {
         usersRequested: (state) => {
@@ -82,6 +59,24 @@ const userSlice = createSlice({
         },
         userCreateFailed: (state, action) => {
             state.error = action.payload;
+        },
+
+        userUpdateRequested: () => {
+            // null
+        },
+        userUpdateSuccess: (state, action) => {
+            const findIndex = state.entities.findIndex(usr => usr._id === action.payload._id);
+            state.entities[findIndex] = {...action.payload};
+        },
+        userUpdateFailed: (state, action) => {
+            state.error = action.payload;
+        },
+
+        userLoggedOut: (state) => {
+            state.entities = null;
+            state.isLoggedIn = false;
+            state.auth = null;
+            state.dataLoaded = false;
         }
     }
 });
@@ -95,7 +90,8 @@ const {reducer: usersReducer, actions} = userSlice;
 const createUser = (payload) => async (dispatch) => {
     dispatch(actions.userCreateRequested());
     try {
-        const {content} = await userService.create(payload);
+        // const {content} = await userService.create(payload);
+        const content = await userService.create(payload);
         dispatch(actions.userCreateSuccess(content));
         history.push('/users');
     } catch (err) {
@@ -146,6 +142,23 @@ const logIn = ({email, password}, redirectPath) => async (dispatch) => {
     }
 };
 
+const logOut = () => (dispatch) => {
+    localStorageService.removeAuthData();
+    dispatch(actions.userLoggedOut());
+    history.push('/');
+};
+
+const updateUserData = ({email, password, ...rest}) => async (dispatch) => {
+    dispatch(actions.userUpdateRequested());
+    try {
+        const content = await userService.create({email, password, ...rest});
+        dispatch(actions.userUpdateSuccess(content));
+        history.push('/users/'+content._id);
+    } catch (err) {
+        dispatch(actions.userUpdateFailed(err.message));
+    }
+};
+
 // **********************************************************************
 // Users list
 // **********************************************************************
@@ -189,6 +202,8 @@ const getUsersLoadingStatus = () => (state) => state.users.isLoading;
 export {
     signUp,
     logIn,
+    logOut,
+    updateUserData,
     loadUsersList,
 
     getUserById,

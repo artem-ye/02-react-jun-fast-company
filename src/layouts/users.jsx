@@ -9,18 +9,6 @@ import { UserProvider } from '../hooks/useUsers';
 
 const UsersLayout = () => {
     const {userId, mode} = useParams();
-    // const dataLoadedStatus = useSelector(getDataLoadedStatus());
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     if (!dataLoadedStatus) {
-    //         dispatch(loadUsersList());
-    //     }
-    // }, []);
-
-    // if (!dataLoadedStatus) {
-    //     return 'loading...';
-    // }
 
     const childComponent = () => {
         if (!userId) {
