@@ -48,7 +48,7 @@ const loadProfessionsList = () => async (dispatch, getState) => {
 const getProfessions = () => (state) => state.professions.entities;
 const getProfessionsLoadingStatus = () => (state) => state.professions.isLoading;
 const getProfessionById = (id) => (state) => {
-    if (!state.professions) {
+    if (!state.professions.entities) {
         return {};
     }
 

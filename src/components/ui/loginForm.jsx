@@ -4,17 +4,18 @@ import TextField from '../common/form/textField';
 import {validator} from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
 import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { logIn } from '../../store/users';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthErrors, logIn } from '../../store/users';
 
 const LoginForm = () => {
     const history = useHistory();
     const initialDataState = {email: '', password: '', stayOn: false};
     const [data, setData] = useState(initialDataState);
     const dispatch = useDispatch();
+    const loginErrors = useSelector(getAuthErrors());
 
     const [errors, setErrors] = useState({});
-    const [authError, setAuthError] = useState(null);
+    // const [authError, setAuthError] = useState(null);
 
     useEffect(() => {
         validate();
@@ -36,7 +37,7 @@ const LoginForm = () => {
     };
 
     const handleChange = (data) => {
-        authError && setAuthError(null);
+        // authError && setAuthError(null);
         setData((prevState) => {
             return {...prevState, [data.name]: data.value};
         });
@@ -52,8 +53,6 @@ const LoginForm = () => {
 
         const redirectPath = history?.location?.state?.from?.pathname || '/';
         dispatch(logIn(data, redirectPath));
-        // const path = history?.location?.state?.from?.pathname || '/';
-        // history.push(path);
     };
 
     const isValid = Object.keys(errors).length === 0;
@@ -81,8 +80,8 @@ const LoginForm = () => {
                 name='stayOn'
                 onChange={handleChange}
             >Запомнить меня</CheckBoxField>
-            {authError && <p className="text-danger">{authError}</p>}
-            <button type="submit" disabled={ !isValid || authError } className="btn btn-primary w-100 mx-auto mb-4">Submit</button>
+            {loginErrors && <p className="text-danger">{loginErrors}</p>}
+            <button type="submit" disabled={ !isValid } className="btn btn-primary w-100 mx-auto mb-4">Submit</button>
         </form>
     );
 };

@@ -5,7 +5,6 @@ import InfoCard from './userInfo/infoCard';
 import QualitiesCard from './userInfo/qualitiesCard';
 import MeetingsCard from './userInfo/meetingsCard';
 import CommentsList from '../../common/comments/commentsList';
-import { CommentsProvider } from '../../../hooks/useComments';
 import { useSelector } from 'react-redux';
 import { getUserById } from '../../../store/users';
 
@@ -29,9 +28,7 @@ const UserCard = ({userId}) => {
                     <MeetingsCard quantity={user.completedMeetings}></MeetingsCard>
                 </div>
                 <div className="col-md-8">
-                    <CommentsProvider>
-                        <CommentsList userId={userId}/>
-                    </CommentsProvider>
+                    <CommentsList userId={userId}/>
                 </div>
             </div>
         </div>

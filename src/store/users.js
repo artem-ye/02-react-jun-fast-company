@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import authService from '../services/auth.service';
 import localStorageService, { setTokens } from '../services/localStorage.service';
 import userService from '../services/user.service';
+import handleAuthError from '../utils/authErrorsHandler';
 import history from '../utils/history';
 import randomAvatarUrl from '../utils/randomAvatarUrl';
 
@@ -41,7 +42,7 @@ const userSlice = createSlice({
         },
 
         authRequested: (state, action) => {
-            // null
+            state.error = null;
         },
         authRequestSuccess: (state, action) => {
             state.auth = {...action.payload};
@@ -138,7 +139,8 @@ const logIn = ({email, password}, redirectPath) => async (dispatch) => {
         console.log('redirectiong to ', redirectPath);
         history.push(redirectPath);
     } catch (err) {
-        dispatch(actions.authRequestFailed(err.message));
+        const errText = handleAuthError(err);
+        dispatch(actions.authRequestFailed(errText));
     }
 };
 
@@ -199,6 +201,8 @@ const getCurrentUser = () => (state) => {
 
 const getUsersLoadingStatus = () => (state) => state.users.isLoading;
 
+const getAuthErrors = () => (state) => state.users.error;
+
 export {
     signUp,
     logIn,
@@ -212,7 +216,8 @@ export {
     getUsersLoadingStatus,
     getIsLoggedIn,
     getCurrentUserId,
-    getCurrentUser
+    getCurrentUser,
+    getAuthErrors
 
 };
 

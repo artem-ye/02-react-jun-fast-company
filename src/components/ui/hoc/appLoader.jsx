@@ -18,7 +18,7 @@ const AppLoader = ({children}) => {
     }, [isLoggedIn]);
 
     if (!isDataLoaded) {
-        console.log('loading...');
+        return null;
     }
 
     return children;

@@ -5,7 +5,7 @@ import displayDate from '../../../utils/dateMoment';
 
 const Comment = ({data, handleDelete}) => {
     const commentAuthor = useSelector(getUserById(data.userId));
-    const currentUserId = useSelector(getCurrentUserId);
+    const currentUserId = useSelector(getCurrentUserId());
 
     const onDeleteClick = (id) => {
         handleDelete(id);
@@ -17,10 +17,6 @@ const Comment = ({data, handleDelete}) => {
                 <div className="col">
                     <div className="d-flex flex-start ">
 
-                        {/* <Avatar
-                            style={{width: 65, height: 65}}
-                            className='shadow-1-strong me-3'
-                        /> */}
                         <img
                             className='shadow-1-strong me-3'
                             style={{width: 65, height: 65}}

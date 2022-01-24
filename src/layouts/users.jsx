@@ -5,7 +5,7 @@ import EditUserPage from '../components/page/editUserPage';
 import UserPage from '../components/page/userPage';
 import UsersListPage from '../components/page/usersListPage';
 import UsersLoader from '../components/ui/hoc/usersLoader';
-import { UserProvider } from '../hooks/useUsers';
+// import { UserProvider } from '../hooks/useUsers';
 
 const UsersLayout = () => {
     const {userId, mode} = useParams();
@@ -24,9 +24,7 @@ const UsersLayout = () => {
 
     return (
         <UsersLoader>
-            <UserProvider>
-                {childComponent()}
-            </UserProvider>
+            {childComponent()}
         </UsersLoader>
     );
 };

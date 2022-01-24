@@ -1,20 +1,38 @@
-import React from 'react';
-// import API from '../../../API';
-import { useComments } from '../../../hooks/useComments';
+import { nanoid } from 'nanoid';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createComment, getComments, getCommentsLoadingStatus, loadCommentsList, removeComment } from '../../../store/comments';
+import { getCurrentUserId } from '../../../store/users';
 import Comment from './comment';
 import NewCommentForm from './newCommentForm';
 
 const CommentsList = ({userId}) => {
-    const {comments, createComment, removeComment} = useComments();
+    const dispatch = useDispatch();
+    const comments = useSelector(getComments());
+    const commentsLoadingStatus = useSelector(getCommentsLoadingStatus());
+    const currentUserId = useSelector(getCurrentUserId());
+
+    useEffect(() => {
+        dispatch(loadCommentsList(userId));
+    }, [userId]);
+
     const handleCommentDelete = (commentId) => {
-        // API.comments.remove(commentId);
-        // setComments(comments.filter(comment => comment._id !== commentId));
-        removeComment(commentId);
+        dispatch(removeComment(commentId));
     };
 
     const handleCommentAdd = (data) => {
-        createComment(data);
+        const comment = {
+            _id: nanoid(),
+            ...data,
+            pageId: userId,
+            created_at: Date.now(),
+            userId: currentUserId
+        };
+
+        dispatch(createComment(comment));
     };
+
+    if (commentsLoadingStatus) return 'loading';
 
     return (
         <>
